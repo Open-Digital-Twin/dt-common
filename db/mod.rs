@@ -7,6 +7,7 @@ use cdrs::query::QueryExecutor;
 use std::sync::Arc;
 use std::env;
 
+// Requires mod models
 use crate::models::app::{CurrentSession};
 
 pub fn init_db_session() -> Arc<CurrentSession> {
