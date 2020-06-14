@@ -8,7 +8,7 @@ use std::sync::Arc;
 use std::env;
 
 // Requires mod models
-use crate::models::app::{CurrentSession};
+use crate::common::models::app::{CurrentSession};
 
 pub fn init_db_session() -> Arc<CurrentSession> {
   let db_address = env::var("DB_ADDRESS").unwrap();
