@@ -1,10 +1,12 @@
 #[warn(unused_imports)]
+// use time::;
 
 use serde::{Deserialize, Serialize};
-// use cdrs::frame::IntoBytes;
-// use cdrs::types::from_cdrs::FromCDRSByName;
+use cdrs::frame::{IntoBytes, TryFromRow};
 use cdrs::query_values;
 use cdrs::query::QueryValues;
+use cdrs::types::from_cdrs::FromCDRSByName;
+
 use uuid::Uuid;
 use chrono::prelude::*;
 
@@ -18,24 +20,27 @@ struct Twin {
 
 /// Generic element component of a Twin instance.
 /// Used to define structure between other elements and to attach sources of data.
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, IntoCDRSValue, TryFromRow)]
 pub struct Element {
   pub id: Uuid,
   pub twin: Uuid,
   pub name: String,
   #[serde(skip_serializing_if = "Option::is_none")]
   pub parent: Option<Uuid>, // optional parent element
-  pub created_at: DateTime<Utc>
+  // pub created_at: time::OffsetDateTime
+  // pub created_at: DateTime<Utc>
 }
 
 impl Element {
-  fn new(id: Uuid, twin: Uuid, name: String, parent: Uuid, created_at: DateTime<Utc>) -> Element {
+  // fn new(id: Uuid, twin: Uuid, name: String, parent: Uuid, created_at: Timespec) -> Element {
+  // fn new(id: Uuid, twin: Uuid, name: String, parent: Uuid, created_at: DateTime<Utc>) -> Element {
+  fn new(id: Uuid, twin: Uuid, name: String, parent: Uuid) -> Element {
     Element {
       id: id,
       twin: twin,
       name: name,
       parent: Some(parent),
-      created_at: created_at
+      // created_at: created_at
     }
   }
 
@@ -65,12 +70,12 @@ pub struct ElementRegister {
   pub parent: Option<Uuid>
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, IntoCDRSValue, TryFromRow)]
 pub struct Source {
   pub id: Uuid,
   pub name: String,
   pub element: Uuid,
-  pub created_at: DateTime<Utc>
+  // pub created_at: DateTime<Utc>
   // type
 }
 
