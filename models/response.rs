@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use std::collections::HashMap;
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LoginResponse {
   pub message: String,
@@ -15,6 +17,14 @@ pub struct Response {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct DataResponse<T> {
+  pub data: T,
+  pub message: String,
+  pub status: bool
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct DataResponseWithTopics<T> {
+  pub topics: HashMap<String, String>,
   pub data: T,
   pub message: String,
   pub status: bool

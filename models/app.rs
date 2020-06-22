@@ -22,3 +22,6 @@ pub struct Environment {
   pub secret_key: String,
   pub twin_instance: Uuid
 }
+
+pub const SOURCE_DATA_TOPIC: &str = "Data_Publish";
+pub const SOURCE_DATA_ACK_TOPIC: &str = "Data_Publish_ACK";
