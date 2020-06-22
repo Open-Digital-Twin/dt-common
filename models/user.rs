@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use cdrs::frame::IntoBytes;
+use cdrs::frame::{ IntoBytes, TryFromRow };
 use cdrs::types::from_cdrs::FromCDRSByName;
 use cdrs::types::prelude::*;
 use uuid::Uuid;
