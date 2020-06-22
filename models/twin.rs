@@ -8,7 +8,10 @@ use cdrs::query::QueryValues;
 use cdrs::types::from_cdrs::FromCDRSByName;
 
 use uuid::Uuid;
+use blob_uuid::{to_blob};
 use chrono::prelude::*;
+
+use std::env;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 struct Twin {
@@ -86,6 +89,17 @@ impl Source {
       "name" => self.name,
       "element" => self.element
     )
+  }
+
+  pub fn data_topic(self) -> String {
+    let twin = Uuid::parse_str(env::var("TWIN_INSTANCE").unwrap().as_str())
+      .expect("Twin instance to be defined");
+
+    format!("{}/{}/{}", to_blob(&twin), to_blob(&self.element), to_blob(&self.id))
+  }
+
+  pub fn data_ack_topic(self) -> String {
+    format!("{}/ack", self.data_topic())
   }
 }
 
