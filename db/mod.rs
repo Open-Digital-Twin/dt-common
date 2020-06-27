@@ -42,7 +42,7 @@ pub fn get_db_session() -> Arc<CurrentSession> {
   _session
 }
 
-pub fn get_item_by_id<T: TryFromRow>(session: web::Data<Arc<CurrentSession>>, item_id: String, table: String) -> Result<T, (String, usize)> {
+pub fn get_by_id<T: TryFromRow>(session: web::Data<Arc<CurrentSession>>, item_id: String, table: String) -> Result<T, (String, usize)> {
   let id: Uuid;
   
   match Uuid::parse_str(&item_id) {
