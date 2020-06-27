@@ -118,4 +118,3 @@ pub struct SourceData {
   pub value: String,
   pub created_at: DateTime<Utc>
 }
-
