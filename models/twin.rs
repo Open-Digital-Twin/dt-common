@@ -23,7 +23,7 @@ struct Twin {
 
 /// Generic element component of a Twin instance.
 /// Used to define structure between other elements and to attach sources of data.
-#[derive(Serialize, Deserialize, Clone, Debug, IntoCDRSValue, TryFromRow)]
+#[derive(Serialize, Deserialize, Clone, Debug, IntoCDRSValue, TryFromRow, PartialEq)]
 pub struct Element {
   pub id: Uuid,
   pub twin: Uuid,
@@ -73,7 +73,7 @@ pub struct ElementRegister {
   pub parent: Option<Uuid>
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, IntoCDRSValue, TryFromRow)]
+#[derive(Serialize, Deserialize, Clone, Debug, IntoCDRSValue, TryFromRow, PartialEq)]
 pub struct Source {
   pub id: Uuid,
   pub name: String,
