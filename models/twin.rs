@@ -68,6 +68,12 @@ impl Element {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct ElementSerialized {
+  pub element: Element,
+  pub sources: Vec<Source>
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ElementRegister {
   pub name: String,
   pub parent: Option<Uuid>
