@@ -16,7 +16,7 @@ use actix_web::{web};
 // Requires mod models
 use crate::common::models::app::{CurrentSession};
 
-use crate::common::models::twin::{Source};
+use crate::common::models::twin::{Source, Element};
 
 pub fn init_db_session() -> Arc<CurrentSession> {
   let db_address = env::var("DB_ADDRESS").unwrap();
@@ -97,4 +97,24 @@ pub fn get_element_sources(session: web::Data<Arc<CurrentSession>>, element_id: 
     sources.push(Source::try_from_row(row).unwrap());
   }
   Ok(sources)
+}
+
+pub fn get_twin_elements(session: web::Data<Arc<CurrentSession>>) -> Result<Vec<Element>, (String, usize)> {
+  let twin = env::var("TWIN_INSTANCE").unwrap();
+
+  let r = session.query(format!("SELECT * FROM element WHERE twin = {}", twin));
+
+  let rows = r.expect("Get elements of twin")
+    .get_body().unwrap()
+    .into_rows().unwrap();
+
+  if rows.is_empty() {
+    return Ok(vec![]);
+  }
+
+  let mut elements: Vec<Element> = Vec::new();
+  for row in rows {
+    elements.push(Element::try_from_row(row).unwrap());
+  }
+  Ok(elements)
 }
