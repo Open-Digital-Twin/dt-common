@@ -29,3 +29,10 @@ pub struct DataResponseWithTopics<T> {
   pub message: String,
   pub status: bool
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct VecDataResponse<T> {
+  pub data: Vec<T>,
+  pub message: String,
+  pub status: bool
+}
