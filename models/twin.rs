@@ -12,6 +12,7 @@ use blob_uuid::{to_blob};
 use chrono::prelude::*;
 
 use std::env;
+use std::ops::DerefMut;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 struct Twin {
@@ -23,7 +24,7 @@ struct Twin {
 
 /// Generic element component of a Twin instance.
 /// Used to define structure between other elements and to attach sources of data.
-#[derive(Serialize, Deserialize, Clone, Debug, IntoCDRSValue, TryFromRow, PartialEq)]
+#[derive(Serialize, Deserialize, Clone, Debug, IntoCDRSValue, TryFromRow, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Element {
   pub id: Uuid,
   pub twin: Uuid,
@@ -70,7 +71,14 @@ impl Element {
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ElementSerialized {
   pub element: Element,
-  pub sources: Vec<Source>
+  pub sources: Vec<Source>,
+  pub children: Vec<ElementSerialized>
+}
+
+impl ElementSerialized {
+  pub fn add_child(&mut self, child_element: ElementSerialized) {
+    self.children.push(child_element);
+  }
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
