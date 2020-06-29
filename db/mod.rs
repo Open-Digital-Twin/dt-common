@@ -36,6 +36,7 @@ pub fn init_db_session() -> Arc<CurrentSession> {
   _session
 }
 
+#[allow(dead_code)]
 pub fn get_db_session() -> Arc<CurrentSession> {
   let _session = init_db_session();
 
@@ -44,6 +45,7 @@ pub fn get_db_session() -> Arc<CurrentSession> {
   _session
 }
 
+#[allow(dead_code)]
 pub fn get_by_id<T: TryFromRow>(session: web::Data<Arc<CurrentSession>>, item_id: String, table: String) -> Result<T, (String, usize)> {
   let id: Uuid;
   
@@ -69,6 +71,7 @@ pub fn get_by_id<T: TryFromRow>(session: web::Data<Arc<CurrentSession>>, item_id
   return Ok(T::try_from_row(rows[0].clone()).unwrap());
 }
 
+#[allow(dead_code)]
 pub fn get_element_sources(session: web::Data<Arc<CurrentSession>>, element_id: String) -> Result<Vec<Source>, (String, usize)> {
   let id: Uuid;
 
@@ -99,6 +102,7 @@ pub fn get_element_sources(session: web::Data<Arc<CurrentSession>>, element_id: 
   Ok(sources)
 }
 
+#[allow(dead_code)]
 pub fn get_twin_elements(session: web::Data<Arc<CurrentSession>>) -> Result<Vec<Element>, (String, usize)> {
   let twin = env::var("TWIN_INSTANCE").unwrap();
 
