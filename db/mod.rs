@@ -12,6 +12,7 @@ use uuid::Uuid;
 use blob_uuid::to_uuid;
 
 use actix_web::{web};
+use rumq_client::{QoS};
 
 // Requires mod models
 use crate::common::models::app::{CurrentSession};
@@ -121,4 +122,15 @@ pub fn get_twin_elements(session: web::Data<Arc<CurrentSession>>) -> Result<Vec<
     elements.push(Element::try_from_row(row).unwrap());
   }
   Ok(elements)
+}
+
+#[allow(dead_code)]
+pub fn get_QoS(variable: &str) -> QoS {
+  let qos_value = env::var(variable).unwrap().parse::<u8>().unwrap();
+
+  match qos_value {
+    0 => QoS::AtMostOnce,
+    1 => QoS::AtLeastOnce,
+    2 => QoS::ExactlyOnce
+  }
 }
