@@ -125,12 +125,13 @@ pub fn get_twin_elements(session: web::Data<Arc<CurrentSession>>) -> Result<Vec<
 }
 
 #[allow(dead_code)]
-pub fn get_QoS(variable: &str) -> QoS {
+pub fn get_qos(variable: &str) -> QoS {
   let qos_value = env::var(variable).unwrap().parse::<u8>().unwrap();
 
   match qos_value {
     0 => QoS::AtMostOnce,
     1 => QoS::AtLeastOnce,
-    2 => QoS::ExactlyOnce
+    2 => QoS::ExactlyOnce,
+    _ => QoS::AtMostOnce
   }
 }
