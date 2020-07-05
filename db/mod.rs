@@ -72,6 +72,28 @@ pub fn get_by_id<T: TryFromRow>(session: web::Data<Arc<CurrentSession>>, item_id
 }
 
 #[allow(dead_code)]
+pub fn delete_by_id<T: TryFromRow>(session: web::Data<Arc<CurrentSession>>, item_id: String, table: String) -> Result<String, (String, usize)> {
+  let id: Uuid;
+
+  match Uuid::parse_str(&item_id) {
+    Ok(_id) => { id = _id },
+    Err(_error) => {
+      match to_uuid(&item_id) {
+        Ok(_id) => { id = _id },
+        Err(_) => { return Err((format!("Invalid input."), 400)); }
+      }
+    }
+  }
+
+  let r = session.query(format!("DELETE FROM {} WHERE id = {}", table, id));
+
+  return match r {
+    Ok(_) => Ok(format!("Deleted {} {}.", table, id)),
+    Err(_) => Ok(format!("Error deleting {} {}.", table, id))
+  };
+}
+
+#[allow(dead_code)]
 pub fn get_element_sources(session: web::Data<Arc<CurrentSession>>, element_id: String) -> Result<Vec<Source>, (String, usize)> {
   let id: Uuid;
 
