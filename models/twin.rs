@@ -124,7 +124,7 @@ pub struct SourceRegister {
   // type
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, TryFromRow)]
 pub struct SourceData {
   pub source: Uuid,
   pub stamp: i64, // DateTime<Utc>
