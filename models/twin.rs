@@ -1,18 +1,18 @@
 #[warn(unused_imports)]
-// use time::;
 
 use serde::{Deserialize, Serialize};
 use cdrs::frame::{IntoBytes, TryFromRow};
 use cdrs::query_values;
 use cdrs::query::QueryValues;
 use cdrs::types::from_cdrs::FromCDRSByName;
+use cdrs::types::ByName;
 
 use uuid::Uuid;
 use blob_uuid::{to_blob};
+use chrono::{DateTime, NaiveDateTime};
 use chrono::prelude::*;
 
 use std::env;
-use std::ops::DerefMut;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 struct Twin {
@@ -124,11 +124,31 @@ pub struct SourceRegister {
   // type
 }
 
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, IntoCDRSValue, TryFromRow, Eq, Ord, PartialEq, PartialOrd)]
 pub struct SourceData {
   pub source: Uuid,
-  pub stamp: DateTime<Utc>,
+  pub stamp: i64, // DateTime<Utc>
   pub value: String,
-  pub created_at: DateTime<Utc>
+  pub created_at: i64 // DateTime<Utc>
+}
+
+// impl TryFromRow for SourceData {
+//   fn try_from_row(row: cdrs::types::rows::Row) -> cdrs::Result<Self> {
+//     Ok(SourceData {
+//       source: row.by_name("source").unwrap().expect("Source id"),
+//       stamp: DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(row.by_name("stamp").unwrap().expect("Timestamp"), 0), Utc),
+//       value: row.by_name("value").unwrap().expect("Value"),
+//       created_at: DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(row.by_name("created_at").unwrap().expect("Created at"), 0), Utc)
+//     })
+//   }
+// }
+
+impl SourceData {
+  pub fn get_stamp(&self) -> DateTime<Utc> {
+    DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(self.stamp / 1000, 0), Utc)
+  }
+
+  pub fn get_created_at(&self) -> DateTime<Utc> {
+    DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(self.created_at / 1000, 0), Utc)
+  }
 }
