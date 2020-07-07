@@ -124,7 +124,6 @@ pub struct SourceRegister {
   // type
 }
 
-
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct SourceData {
   pub source: Uuid,
